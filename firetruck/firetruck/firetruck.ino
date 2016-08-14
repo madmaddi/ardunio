@@ -23,7 +23,7 @@ void setup() {
   Serial.begin(9600);
   strip.begin();
   //strip.setBrightness(128);
-  strip.setBrightness(32);
+  strip.setBrightness(50);
   strip.show(); // Initialize all pixels to 'off'
 }
 
@@ -34,22 +34,128 @@ void loop() {
   uint32_t green = strip.Color(0,255, 0);
   uint32_t red = strip.Color(255, 0, 0);
   uint32_t magenta = strip.Color(255, 0, 255);
+  uint32_t eg = strip.Color(250,167 , 0);
   //leftToRight(magenta, 50);
   //leftToRight(green, 5);
+  //leftToRight(red, 50);
   
   
   // Some example procedures showing how to display to the pixels:
-  //colorWipe(strip.Color(255, 0, 0), 10); // Red
+  //colorWipe(red, 20); // Red
   //colorWipe(strip.Color(0, 255, 0), 10); // Green
-  //colorWipe(strip.Color(0, 0, 255), 30); // Blue
+  //colorWipe(blue, 150); // Blue
+  //colorWipe(eg, 30);
+
+  //coolColorWipe(red,blue,20);
+  
   // Send a theater pixel chase in...
   //theaterChase(strip.Color(127, 127, 127), 50); // White
-  //theaterChase(strip.Color(127,   0,   0), 50); // Red
+  //theaterChase(strip.Color(127,   0,   0), 500); // Red
   //theaterChase(strip.Color(  0,   0, 127), 50); // Blue*/
 
   //rainbow(10);
-  rainbowCycle(5);
-  //theaterChaseRainbow(4);
+  //rainbowCycle(5);
+  //theaterChaseRainbow(5);
+  
+  //allColors(red, 500);
+  //theWheel(50);
+  
+  //foo(red,blue,20);
+  //foo(blue,red,20);
+  //foo2(red,blue,20);
+  //foo2(blue,red,20);
+  //foo3(red,blue,20);
+  //foo3(blue,red,20);
+  foo4(red,blue,20);
+  //foo4(blue,red,20);
+}
+
+void foo4(uint32_t c1, uint32_t c2, uint16_t wait){
+  // all c1
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, c1);
+  }
+  strip.show();
+
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      //strip.setPixelColor(strip.numPixels()/2-i, c2);
+      strip.setPixelColor(i, c2);
+      strip.setPixelColor(i+1, c2);
+      strip.setPixelColor(i+2, c2);
+      strip.setPixelColor(i+3, c2);
+      if (i>0) strip.setPixelColor(i-1, c1);
+      if (i>1) strip.setPixelColor(i-2, c1);
+      if (i>2) strip.setPixelColor(i-3, c1);
+      //if (i>3) strip.setPixelColor(i-4, c1);
+      strip.show();
+      delay(wait);
+  }  
+  
+  for(uint16_t i=strip.numPixels(); i>0; i--) {
+      //strip.setPixelColor(strip.numPixels()/2-i, c2);
+      strip.setPixelColor(i, c2);
+      strip.setPixelColor(i-1, c2);
+      strip.setPixelColor(i-2, c2);
+      strip.setPixelColor(i-3, c2);
+      
+      if (i<strip.numPixels()) strip.setPixelColor(i+1, c1);
+      if (i-2<strip.numPixels()) strip.setPixelColor(i+2, c1);
+      if (i-3<strip.numPixels()) strip.setPixelColor(i+3, c1);
+      if (i-4<strip.numPixels()) strip.setPixelColor(i+4, c1);
+      
+      strip.show();
+      delay(wait);
+  }
+}
+
+
+void foo3(uint32_t c1, uint32_t c2, uint16_t wait){
+  // all c1
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, c1);
+  }
+  strip.show();
+
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      //strip.setPixelColor(strip.numPixels()/2-i, c2);
+      strip.setPixelColor(i, c2);
+      strip.setPixelColor(i+1, c2);
+      strip.setPixelColor(i+2, c2);
+      strip.setPixelColor(i+3, c2);
+      if (i>0) strip.setPixelColor(i-1, c1);
+      if (i>1) strip.setPixelColor(i-2, c1);
+      if (i>2) strip.setPixelColor(i-3, c1);
+      //if (i>3) strip.setPixelColor(i-4, c1);
+      strip.show();
+      delay(wait);
+  }      
+}
+
+
+void foo2(uint32_t c1, uint32_t c2, uint16_t wait){
+  // all c1
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, c1);
+      //if (i+1<strip.numPixels())strip.setPixelColor(i+1, c2);
+      
+  }
+  strip.show();
+
+  for(uint16_t i=0; i<strip.numPixels()/2; i++) {
+      strip.setPixelColor(strip.numPixels()/2-i, c2);
+      strip.setPixelColor(strip.numPixels()/2+i, c2);
+      strip.show();
+      delay(wait);
+  }      
+}
+
+void foo(uint32_t c1, uint32_t c2, uint16_t wait){
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, c1);
+      if (i+1<strip.numPixels())strip.setPixelColor(i+1, c2);
+      strip.show();
+      delay(wait);
+  }
 }
 
 // Fill the dots one after the other with a color
@@ -77,18 +183,71 @@ void leftToRight(uint32_t c, uint16_t wait) {
   */
 }
 
+void theWheel(uint16_t wait){
+  for (uint16_t r=0; r<255;r++){
+    //for (uint16_t g=0; g<255;g++){
+     // for (uint16_t b=0; b<255;b++){
+          
+      
+      Serial.print(r);      
+      Serial.print("\t"); 
+      //Serial.print(g);
+      //Serial.print("\t"); 
+      //Serial.print(b); 
+      Serial.print("\n"); 
+      
+        //allColors(strip.Color(r, r, r), wait);
+        //allColors(Wheel(r), wait);
+      //}
+    //}
+  }
+}
+void allColors(uint32_t c, uint16_t wait) {
+  
+  for(uint16_t i=0; i<=strip.numPixels(); i++) {    
+      strip.setPixelColor(i, c);
+  }
+
+  strip.show();
+  delay(wait);
+}
+
+// Fill the dots one after the other with a color
+void coolColorWipe(uint32_t first, uint32_t scnd, uint16_t wait) {
+  
+  for(uint16_t i=0; i<=strip.numPixels(); i++) {
+      strip.setPixelColor(i, first);
+      //strip.setPixelColor(strip.numPixels()-i, c);      
+      strip.show();
+      delay(wait);
+  }
+
+  for(uint16_t i=0; i<=strip.numPixels(); i++) {     
+      strip.setPixelColor(i, scnd);          
+      strip.show();
+      delay(wait);
+  }
+}
+
+
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint16_t wait) {
   
-  for(uint16_t i=0; i<=strip.numPixels()/2; i++) {
-      Serial.print(i);
+  for(uint16_t i=0; i<=strip.numPixels(); i++) {
+      /*Serial.print(i);
       Serial.print(" "); 
       Serial.print(strip.numPixels()-i);      
       Serial.print("\t"); 
       Serial.print("\n"); 
-      
+      */
       strip.setPixelColor(i, c);
-      strip.setPixelColor(strip.numPixels()-i, c);      
+      //strip.setPixelColor(strip.numPixels()-i, c);      
+      strip.show();
+      delay(wait);
+  }
+
+  for(uint16_t i=0; i<=strip.numPixels(); i++) {     
+      strip.setPixelColor(i, 0);          
       strip.show();
       delay(wait);
   }
