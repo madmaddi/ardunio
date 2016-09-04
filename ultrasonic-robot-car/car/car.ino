@@ -4,10 +4,6 @@ For more awesome videos, subsrice to my channel:
 http://www.youtube.com/subscription_center?add_user=Roypeer1
 */
 
-
-
-
-
 #include <AFMotor.h> //import your motor shield library
 #define trigPin 12 // define the pins of your sensor
 #define echoPin 13 
@@ -24,18 +20,23 @@ long dauer;
 long distance;
 bool motorEnabled = true;
 
- /*
+int delayTime = 250;
+int turnOverTime = 500;
+int waitTime = 500;
+int forwardTime = 1000;
+/*
   * 0 = STOP
   * 1 = FORWARD
   * 2 = BACKWARD
   * 3 = TURN LEFT
   * 4 = TURN RIGHT
-  */
- int motorStatus = 0 ;
+*/
+int motorStatus = 0 ;
 
 int carspeed2 = 200;
- int carspeed1 = carspeed2 - 8;
- 
+int carspeed1 = carspeed2 - 8;
+
+
 void setup() {
   
   Serial.begin(9600); // begin serial communitication  
@@ -49,18 +50,10 @@ void setup() {
   motor2.run(RELEASE);
 }
 
-int a =10;
 void loop() {
-  /*
-  if (a < 1) {
-    motor1.run(FORWARD);
-    motor2.run(FORWARD);
-    a=1;
-  }
-  */
-  
-  distance = fetchDistance();
-  Serial.println(distance);
+  delay(waitTime);
+  distance = cumulateDistance();
+  //Serial.println(distance);
   
   if ( distance < 40.0 ) { 
     Serial.println(distance);  
@@ -69,21 +62,62 @@ void loop() {
     
     // change direction unless distance greater than 0.4m
     while(distance < 60.0 ) {
-      distance = fetchDistance();
-      Serial.println(distance);
-      Serial.println("turn over");  
+      distance = cumulateDistance();
+      //Serial.println(distance);
+      //Serial.println("turn over");  
+      delay(waitTime);
       turnLeft();
-      delay(250);
+      delay(turnOverTime);
       stopMotor();
-      delay(500);
+      delay(delayTime);
+      distance = cumulateDistance();
+      Serial.println("########");
     }
-    
-    
   } else {
     forwardMotor();
+    delay(forwardTime); // drive through 0.5s
+    stopMotor();
   }
+
+  Serial.println("--------------");
   
 }
+
+long cumulateDistance(){
+  int measurements = 5;
+  
+  // do x measurements
+  long di[5];
+  long avg = 0.0;
+  long distance = 0.0;
+//  Serial.println("Distance:");
+  for (int i=0; i<measurements; i++){
+    distance = fetchDistance();
+//    Serial.println(distance);
+    avg += distance;
+    di[i] = distance;
+  }
+  
+  avg = avg/measurements;
+  //Serial.println("avg: ");
+  //Serial.println(avg);
+  
+  // get lowest distance from di to avg
+  long avgDistance = 0.0;
+  long nearestDistance = 1000.0;
+  long returnValue = 0.0;
+  for ( int i=0; i<measurements; i++) {
+    avgDistance = abs(avg - di[i]);
+    if (avgDistance < nearestDistance) {
+      nearestDistance = avgDistance;
+      returnValue = di[i];
+    }
+  }
+  //Serial.println("Distance");
+  Serial.println(returnValue);
+  return returnValue;
+}
+
 
 void turnLeft(){
   if ( motorStatus != 3 ) {
@@ -128,12 +162,13 @@ void forwardMotor() {
 }
 
 void setMotorSpeed(int sspeed1, int sspeed2) {
-  Serial.println("setMotorSpeed");
+  //Serial.println("setMotorSpeed");
   //Serial.println(sspeed);
   delay(10);
   motor1.setSpeed(sspeed1); //set the speed of the motors, between 0-255
   motor2.setSpeed(sspeed2); 
 }
+
 
 long fetchDistance(){
   long duration, distance; // start the scan
