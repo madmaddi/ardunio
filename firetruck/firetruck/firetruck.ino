@@ -19,22 +19,34 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(ledsGesamt, PIN, NEO_GRB + NEO_KHZ80
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
+uint32_t blue = strip.Color(0, 0, 255);
+uint32_t green = strip.Color(0,255, 0);
+uint32_t red = strip.Color(255, 0, 0);
+uint32_t magenta = strip.Color(255, 0, 255);
+uint32_t eg = strip.Color(250,167 , 0);
+uint32_t off = strip.Color(0, 0 , 0);  
+uint32_t white = strip.Color(127, 127, 127);
+  
 void setup() {
   Serial.begin(9600);
   strip.begin();
   //strip.setBrightness(128);
-  strip.setBrightness(50);
+  strip.setBrightness(25);
   strip.show(); // Initialize all pixels to 'off'
+
 }
 
 void loop() {
   delay(30);
-  
+/*  
   uint32_t blue = strip.Color(0, 0, 255);
   uint32_t green = strip.Color(0,255, 0);
   uint32_t red = strip.Color(255, 0, 0);
   uint32_t magenta = strip.Color(255, 0, 255);
   uint32_t eg = strip.Color(250,167 , 0);
+  uint32_t off = strip.Color(0, 0 , 0);  
+  uint32_t white = strip.Color(127, 127, 127);
+  */
   //leftToRight(magenta, 50);
   //leftToRight(green, 5);
   //leftToRight(red, 50);
@@ -66,8 +78,78 @@ void loop() {
   //foo2(blue,red,20);
   //foo3(red,blue,20);
   //foo3(blue,red,20);
-  foo4(red,blue,20);
+  //foo4(red,blue,20);
   //foo4(blue,red,20);
+  
+  sequence();
+  //stropo(red, white, 20);
+  
+}
+
+void sequence() {
+
+  for(uint8_t i=0; i<5; i++) {
+    foo4(red,blue, 20);
+  }
+
+  for(uint8_t i=0; i<15; i++) {
+    stropo(red, white, 20);
+  }
+
+  for(uint8_t i=0; i<5; i++) {
+    foo4(red,blue, 20);
+  }
+  
+  uint8_t w = 100;
+  for(uint8_t i=0; i<5; i++) {
+    everyXth(red, white, 20, 3);
+    delay(w);
+    allOff();
+    delay(w);
+    everyXth(red, white, 20, 2);
+    delay(w);
+    allOff();
+    delay(w);
+    everyXth(red, white, 20, 1);
+    delay(w);
+    allOff();
+    delay(w);
+  }
+}
+
+void allOff(){
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    strip.setPixelColor(i, 0);
+  }
+  strip.show();
+}
+
+void everyXth(uint32_t c1,uint32_t c2, uint16_t wait, uint8_t x){
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+    if(i%x==0) {
+      strip.setPixelColor(i, c1);
+    } else {
+      strip.setPixelColor(i, c2);
+    }
+  }
+  strip.show();
+}
+
+void stropo(uint32_t c1,uint32_t c2, uint16_t wait) {
+  // all c1
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, c1);
+  }
+  strip.show();
+
+  delay(wait*6);
+  
+  // all off
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, c2);
+  }
+  strip.show();
+  delay(wait);
 }
 
 void foo4(uint32_t c1, uint32_t c2, uint16_t wait){
