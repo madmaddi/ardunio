@@ -23,7 +23,7 @@ void setup() {
   Serial.begin(9600);
   strip.begin();
   //strip.setBrightness(128);
-  strip.setBrightness(50);
+  strip.setBrightness(100);
   strip.show(); // Initialize all pixels to 'off'
 }
 
@@ -35,6 +35,10 @@ void loop() {
   uint32_t red = strip.Color(255, 0, 0);
   uint32_t magenta = strip.Color(255, 0, 255);
   uint32_t eg = strip.Color(250,167 , 0);
+  uint32_t white = strip.Color(255,255 , 255);
+    uint32_t yellow = strip.Color(255,255 , 0);
+      uint32_t oragne = strip.Color(255,69 , 0);
+    uint32_t off = strip.Color(0,0 , 0);
   //leftToRight(magenta, 50);
   //leftToRight(green, 5);
   //leftToRight(red, 50);
@@ -59,15 +63,15 @@ void loop() {
   
   //allColors(red, 500);
   //theWheel(50);
-  
-  //foo(red,blue,20);
-  //foo(blue,red,20);
-  //foo2(red,blue,20);
-  //foo2(blue,red,20);
-  //foo3(red,blue,20);
-  //foo3(blue,red,20);
-  foo4(red,blue,20);
-  //foo4(blue,red,20);
+  //foo(blue,white,200);
+  //foo(red,white,200);
+  //foo(blue,red,200);
+  //foo2(red,blue,1480);
+  //foo2(blue,oragne, 70);
+  foo3(white,blue, 100);
+  //foo3(blue,oragne, 50);
+  //foo4(off,blue,200);
+  //foo4(blue,red,80);
 }
 
 void foo4(uint32_t c1, uint32_t c2, uint16_t wait){
@@ -106,10 +110,11 @@ void foo4(uint32_t c1, uint32_t c2, uint16_t wait){
       strip.show();
       delay(wait);
   }
+
 }
 
-
 void foo3(uint32_t c1, uint32_t c2, uint16_t wait){
+  Serial.println("hallo");
   // all c1
   for(uint16_t i=0; i<strip.numPixels(); i++) {
       strip.setPixelColor(i, c1);
