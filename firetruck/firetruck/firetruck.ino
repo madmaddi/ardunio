@@ -101,7 +101,11 @@ void sequence() {
   }
   
   uint8_t w = 100;
-  for(uint8_t i=0; i<5; i++) {
+  for(uint8_t i=0; i<3; i++) {
+    everyXth(red, white, 20, 4);
+    delay(w);
+    allOff();
+    delay(w);
     everyXth(red, white, 20, 3);
     delay(w);
     allOff();
