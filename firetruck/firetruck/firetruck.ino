@@ -3,7 +3,7 @@
 
 #define PIN 6
 
-int ledsGesamt = 57;
+int ledsGesamt = 29;
 //int ledsGesamt = 1;
 
 // Parameter 1 = number of pixels in strip
@@ -31,8 +31,8 @@ uint32_t white = strip.Color(127, 127, 127);
 void setup() {
   Serial.begin(9600);
   strip.begin();
-  //strip.setBrightness(125);
-  strip.setBrightness(25);
+  strip.setBrightness(125);
+  //strip.setBrightness(25);
   strip.show(); // Initialize all pixels to 'off'
 
 }
@@ -48,9 +48,9 @@ void loop() {
   
   
   // Some example procedures showing how to display to the pixels:
-  //colorWipe(red, 20); // Red
+  //colorWipe(red, 100); // Red
   //colorWipe(strip.Color(0, 255, 0), 10); // Green
-  //colorWipe(blue, 150); // Blue
+  colorWipe(blue, 50); // Blue
   //colorWipe(eg, 30);
 
   //coolColorWipe(red,blue,20);
@@ -61,19 +61,19 @@ void loop() {
   //theaterChase(strip.Color(  0,   0, 127), 50); // Blue*/
 
   //rainbow(10);
-  rainbowCycle(5);
+  //rainbowCycle(5);
   //theaterChaseRainbow(5);
   
-  //allColors(red, 500);
+  //allColors(blue, 500);
   //theWheel(50);
   //foo(blue,white,200);
   //foo(red,white,200);
   //foo(blue,red,200);
-  //foo2(red,blue,1480);
+  //foo2(red,green,200);
   //foo2(blue,oragne, 70);
-  //foo3(white,blue, 100);
+  foo3(blue,red, 20);
   //foo3(blue,oragne, 50);
-  //foo4(off,blue,200);
+  foo4(off,blue,20);
   //foo4(blue,red,80);  
   //foo(red,blue,20);
   //foo(blue,red,20);
@@ -82,7 +82,7 @@ void loop() {
   //foo3(red,blue,20);
   //foo3(blue,red,20);
   //foo4(red,blue,20);
-  //foo4(blue,red,20);
+  //foo4(magenta,red,120);
   
   //sequence();
   //stropo(red, white, 20);
