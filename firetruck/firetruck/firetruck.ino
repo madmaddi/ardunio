@@ -3,7 +3,7 @@
 
 #define PIN 6
 
-int ledsGesamt = 57;
+int ledsGesamt = 28;
 //int ledsGesamt = 1;
 
 // Parameter 1 = number of pixels in strip
@@ -38,9 +38,9 @@ void setup() {
 }
 
 void loop() {
-  delay(30);
+  //delay(30);
 
-  //wtf(blue, 500);
+  wtf(blue, 500);
   
   //leftToRight(magenta, 50);
   //leftToRight(green, 5);
@@ -61,7 +61,7 @@ void loop() {
   //theaterChase(strip.Color(  0,   0, 127), 50); // Blue*/
 
   //rainbow(10);
-  rainbowCycle(5);
+  //rainbowCycle(5);
   //theaterChaseRainbow(5);
   
   //allColors(red, 500);
