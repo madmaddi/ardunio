@@ -8,12 +8,15 @@ AF_DCMotor motor2(2, MOTOR12_64KHZ);
 
 bool motorEnabled = true;
 
-int delayTime = 250;
-int turnOverTime = 500;
-int waitTime = 500;
-int forwardTime = 1000;
+// 1000 = 1s
+int delayTime = 50;
+int turnOverTime = 200; //0.2s
+int waitTime = 50;
+int driveForwardTime = 1000; // 1s
 
-int carspeed2 = 200;
+int turnOverSpeed = 200;
+
+int carspeed2 = 140;
 int carspeed1 = carspeed2 - 8;
 
 long abstand;
@@ -39,32 +42,20 @@ void setup() {
 }
 
 void loop() {
-  delay(waitTime);
+  forwardMotor();
+  delay(driveForwardTime); // drive through some ms
   distance = cumulateDistance();
   
   if ( distance < 40.0 ) { 
+    turnLeft();
     Serial.println(distance);  
-    // 1st.: STOP
-    stopMotor();  
-    
     // change direction unless distance lower than x
     while(distance < 60.0 ) {
-      distance = cumulateDistance();  
-      delay(waitTime);
-      turnLeft();
       delay(turnOverTime);
-      stopMotor();
-      delay(delayTime);
       distance = cumulateDistance();
-      Serial.println("########");
+      Serial.println(distance);
     }
-  } else {
-    forwardMotor();
-    delay(forwardTime); // drive through some ms
-    stopMotor();
   }
-
-  Serial.println("--------------");
 }
 
 long cumulateDistance(){
@@ -105,6 +96,7 @@ void turnLeft(){
     Serial.println("turn left");  
     motorStatus = 3;
     if ( !motorEnabled ) return;
+    setMotorSpeed(turnOverSpeed, turnOverSpeed);
     motor1.run(FORWARD);
     motor2.run(BACKWARD);
   } 
